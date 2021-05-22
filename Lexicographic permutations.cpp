@@ -5,34 +5,31 @@
 
 using namespace std;
 
-int find(int n){
-    int j=ceil(log10(n));
-    int k=pow(10,j);
-    map<int,int>a;
-    vector<int>b;
+int factorial(int n){
+    if(n<2) return 1;
+    return factorial(n-1)*n;
+}
 
-    int l;
-    while(true){
-        l=k%n;
-            if(a[l] || l==0)
-                break;
-        a[l]=1;
-        b.push_back(l);
-        k*=10;
-        while(k<n){
-            b.push_back(k);
-            a[k]=1;
-            k*=10;
-        }
-    }
-    if (l==0) return 0;
-    int x=1;
-    for(int i=b.size()-2 ; i>=0 ; i--){
-        if(b[i]==b[b.size()-1])
-            break;
-        x++;
-    }
-    return x;
+void solve(vector<int>&a , int n){
+    cout<<n<<endl;
+    if(n<2)return;
+
+    int i=0;
+    while(factorial(10-i)>=n)
+        i++;
+    i--;
+
+    int j=(n+(factorial(10-i-1))-1)/(factorial(10-i-1)) - 1;
+    swap(a[i],a[i+j]);
+    // for(auto j: a)
+    //     cout<<j<<" ";
+    // cout<<endl;
+    sort(a.begin()+i+1, a.end());
+    cout<<"j="<<j<<endl;
+    solve(a, n-(j*factorial(10-i-1)));
+    // for(auto j: a)
+    //     cout<<j<<" ";
+    // cout<<endl;
 }
 
 int main()
@@ -44,13 +41,13 @@ int main()
     freopen("outputf.in", "w", stdout);
 #endif
 
+    vector<int>a={0,1,2,3,4,5,6,7,8,9};
+    int n=1e6;
+    solve(a,n);
     
-    int mx=0;
-
-    for(int i=2;i<1000;i++){
-        mx=max(mx , find(i));
-    }
-    cout<<mx<<endl;
+    for(auto i: a)
+        cout<<i<<" ";
+    
     cerr << "time taken : " << (float)clock() / CLOCKS_PER_SEC << " secs" << endl;
     return 0;
 }
